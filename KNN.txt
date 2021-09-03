@@ -1,0 +1,19 @@
+from sklearn.datasets import load_digits  
+digits = load_digits()
+#载入数据
+
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
+#载入需要的包
+
+digits.keys()
+#dict_keys(['data', 'target', 'target_names', 'images', 'DESCR'])
+x_train, x_test, y_train, y_test = \
+train_test_split(digits['data'],digits['target'],random_state= 0)
+#划分训练集测试集
+
+for i in range(3,11):
+    knn = KNeighborsClassifier(n_neighbors = i)		#尝试不同的K值
+    knn.fit(x_train,y_train)					#拟合
+    print("score:{:.2f}".format(knn.score(x_test,y_test)))	#在测试集验证

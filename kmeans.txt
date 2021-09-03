@@ -1,0 +1,27 @@
+from sklearn.datasets import load_digits  
+digits = load_digits()
+# 导入手写数字数据集
+
+X = digits.data
+Y = digits.target
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(X,Y,test_size=0.3,random_state=0)
+
+# 训练模型
+# 导入相关模块
+from sklearn.cluster import KMeans
+km = KMeans(n_clusters = 10)	#因为手写数字0-9一共十个，因此分十类
+km.fit(x_train,y_train)
+# 对数据进行预测
+y_predicted = km.predict(x_test)
+
+# 结果评估
+from sklearn.metrics import adjusted_rand_score
+adjusted_rand_score(y_test,y_predicted)
+
+centroids = kmeans.cluster_centers_
+
+#对预测的数据绘制散点图
+import matplotlib.pyplot as plt
+plt.scatter(y_test,y_test,c=y_predicted)
+plt.show()

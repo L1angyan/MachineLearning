@@ -1,0 +1,30 @@
+from sklearn.datasets import load_digits
+digits = load_digits()
+
+x = digits.data
+y = digits.target
+# 数据分类
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=0)
+
+# 模型训练与预测
+from sklearn.naive_bayes import GaussianNB
+Bys = GaussianNB(var_smoothing=1e-8)
+Bys.fit(x_train,y_train)
+
+import numpy as np
+from sklearn import metrics
+pred = Bys.predict(x_test)
+accuracy = metrics.accuracy_score(y_test,pred)
+print(accuracy)
+
+# 模型训练与预测
+from sklearn.naive_bayes import MultinomialNB
+Bys = MultinomialNB()
+Bys.fit(x_train,y_train)
+
+import numpy as np
+from sklearn import metrics
+pred = Bys.predict(x_test)
+accuracy = metrics.accuracy_score(y_test,pred)
+print(accuracy)

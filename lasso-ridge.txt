@@ -1,0 +1,43 @@
+from sklearn.datasets import load_diabetes  
+diabetes = load_diabetes()
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split\
+(diabetes.data,diabetes.target, test_size = 0.2)
+
+from sklearn.preprocessing import StandardScaler
+std_x = StandardScaler()
+x_train = std_x.fit_transform(x_train)
+x_test = std_x.transform(x_test)
+
+std_y = StandardScaler()
+y_train = std_y.fit_transform(y_train.reshape(-1,1)) 
+#reshape(-1,1)是为了将数据转化为列向量
+y_test = std_y.fit_transform(y_test.reshape(-1,1))
+
+#使用岭回归进行预测
+#from sklearn.linear_model import Ridge
+from sklearn.linear_model import RidgeCV
+# RidgeCV可以自动选择alpha
+# rd = Ridge(alpha=1.0)
+rd = RidgeCV()
+rd.fit(x_train,y_train)
+y_rd_predict = rd.predict(x_test)
+# 之前进行了标准化，转化回来
+y_rd_predict = std_y.inverse_transform(y_rd_predict)
+
+#使用Lasso回归进行预测
+from sklearn.linear_model import LassoCV
+#from sklearn.linear_model import Lasso
+#LassoCV能自动选择alpha值
+ls = LassoCV()
+ls.fit(x_train,y_train)
+y_ls_predict = ls.predict(x_test)
+y_ls_predict = std_y.inverse_transform(y_ls_predict)
+
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
+print("岭回归的MSE是： ",mean_squared_error(std_y.inverse_transform(y_test),y_rd_predict))
+print("岭回归的R^2是： ",r2_score(std_y.inverse_transform(y_test),y_rd_predict))
+print("Lasso回归的MSE是： ",mean_squared_error(std_y.inverse_transform(y_test),y_ls_predict))
+print("Lasso回归的R^2是： ",r2_score(std_y.inverse_transform(y_test),y_ls_predict))

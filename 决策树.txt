@@ -1,0 +1,28 @@
+from sklearn.datasets import load_digits
+digits = load_digits()
+# 导入数据
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+
+X=digits.data
+Y=digits.target
+x_train,x_test,y_train,y_test = train_test_split(X,Y,test_size=0.3,random_state=0)
+# 获取训练集
+
+for i in range(5,65):
+    DST = DecisionTreeClassifier(criterion='gini',max_depth=i) 
+    # CART算法
+    DST.fit(x_train,y_train)
+    from sklearn import metrics
+    pred = DST.predict(x_test)
+    accuracy = metrics.accuracy_score(y_test,pred)
+    print("The gini accuracy is %.5f"% accuracy+"depth: "+str(i))
+
+DST = DecisionTreeClassifier(criterion='entropy') 
+# 信息熵
+DST.fit(x_train,y_train)
+from sklearn import metrics
+pred = DST.predict(x_test)
+accuracy = metrics.accuracy_score(y_test,pred)
+print("The entropy accuracy is %.5f"% accuracy)

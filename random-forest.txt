@@ -1,0 +1,60 @@
+# 加载手写数字数据
+from sklearn.datasets import load_digits
+digits = load_digits()
+
+from sklearn.model_selection import train_test_split
+X = digits.data
+Y = digits.target
+x_train,x_test,y_train,y_test = train_test_split(X,Y,test_size=0.3,random_state=0)
+from sklearn.ensemble import RandomForestClassifier
+
+for i in range(50,101):
+    # 训练随机森林模型
+    RFC = RandomForestClassifier(n_estimators=i,bootstrap='true',random_state=0,max_depth=4)
+    RFC.fit(x_train,y_train)
+
+    # 预测
+    RFC_pred = RFC.predict(x_test)
+
+    # 对模型进行评估
+    from sklearn import metrics
+    RFC_accuracy = metrics.accuracy_score(y_test,RFC_pred)
+    print('RFC_accuracy 模型综合评估矩阵如下：%.5f'% RFC_accuracy+" n_estimators: "+str(i))
+    
+for i in range(4,101):
+    # 训练随机森林模型
+    RFC = RandomForestClassifier(n_estimators=89,bootstrap='true',random_state=0,max_depth=i)
+    RFC.fit(x_train,y_train)
+
+    # 预测
+    RFC_pred = RFC.predict(x_test)
+
+    # 对模型进行评估
+    from sklearn import metrics
+    RFC_accuracy = metrics.accuracy_score(y_test,RFC_pred)
+    print('RFC_accuracy 模型综合评估矩阵如下：%.5f'% RFC_accuracy+" max_depth: "+str(i))
+
+# 调参发现depth=10 n_estimator=89左右验证率最高
+
+# 加载手写数字数据
+from sklearn.datasets import load_digits
+digits = load_digits()
+
+from sklearn.model_selection import train_test_split
+X = digits.data
+Y = digits.target
+x_train,x_test,y_train,y_test = train_test_split(X,Y,test_size=0.3,random_state=0)
+from sklearn.ensemble import RandomForestClassifier
+
+# 训练随机森林模型
+RFC = RandomForestClassifier(n_estimators=89,bootstrap='true',random_state=0,max_depth=10)
+RFC.fit(x_train,y_train)
+
+# 预测
+RFC_pred = RFC.predict(x_test)
+
+# 对模型进行评估
+from sklearn import metrics
+RFC_accuracy = metrics.accuracy_score(y_test,RFC_pred)
+print('RFC_accuracy 模型综合评估矩阵如下：%.5f'% RFC_accuracy)
+# RFC_accuracy 模型综合评估矩阵如下：0.97778
